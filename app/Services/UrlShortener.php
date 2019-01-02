@@ -68,9 +68,13 @@ class UrlShortener
 
     public function unshorten(string $str)
     {
+        /* @var Url $url */
         $arr = $this->decode($str);
         $id = $this->unwrap($arr);
+
         $url = Url::find($id);
+        $url->visited += 1;
+        $url->save();
 
         return $url->value;
     }
