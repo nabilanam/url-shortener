@@ -14,3 +14,13 @@
 Route::get('/', function () {
     return view('index');
 });
+
+Route::get('/{id}',function ($id){
+    $shortener = new \App\Services\UrlShortener();
+    try{
+        $url = $shortener->unshorten($id);
+        return redirect()->away($url);
+    }catch (Exception $e){
+        return 'Invalid Key';
+    }
+});
