@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ShortenRequest;
 use App\Http\Requests\UnshortenRequest;
 use App\Services\UrlShortener;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class RestController extends Controller
 {
@@ -20,7 +19,15 @@ class RestController extends Controller
     public function create(ShortenRequest $request)
     {
         $url = $request->input('url');
-        $this->validateUrl($url);
+
+        if (!$this->isValid($url)) {
+            return response()->json([
+                'errors' => [
+                    'url' => ['Invalid URL.']
+                ]
+            ], 400);
+        }
+
         return response()->json([
             'url' => $this->shortener->shorten($url)
         ]);
@@ -41,10 +48,8 @@ class RestController extends Controller
         }
     }
 
-    private function validateUrl($url)
+    private function isValid($url)
     {
-        if (!preg_match('/^(http|https)(:\/\/)\w+(\.\w+)+$/', $url)) {
-            throw new HttpException(400, 'invalid url');
-        }
+        return preg_match('/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)/', $url);
     }
 }
