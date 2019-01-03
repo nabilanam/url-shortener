@@ -1798,7 +1798,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      app_url: "http://localhost:3000",
+      app_url: "https://evening-wildwood-80796.herokuapp.com/",
       shorted_url: '',
       form: new _utils_Form__WEBPACK_IMPORTED_MODULE_0__["default"]({
         url: ''
